@@ -11,9 +11,9 @@ enum class OutputFormat
 
 struct ListStrategy
 {
-    virtual void start(std::ostringstream& oss) {};
+    virtual void start(std::ostringstream& oss) {}; // Interface Segregation Principle
     virtual void add_list_item(std::ostringstream& oss,const std::string& item)=0;
-    virtual void end(std::ostringstream& oss) {};
+    virtual void end(std::ostringstream& oss) {};   // Interface Segregation Principle
 };
 
 struct HtmlListStrategy : ListStrategy
