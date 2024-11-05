@@ -5,8 +5,8 @@ and processes the data to extract the values of the OBIS codes specified in the 
 
 Redesign this program to the known design patterns and best practices.
 - Use the SOLID principles
+- Use Modern C++ features
 - Use the C++ Core Guidelines
-- Use the C++20 standard
 - The program should be easy to read and maintain
 - The program should be easy to test
 - The program should be easy to extend: for example, 
@@ -22,7 +22,7 @@ Redesign this program to the known design patterns and best practices.
 - Use a static code analyzer like cppcheck to check and improve the code quality.
 
 - Think about the original version vs. the redesigned version. 
-   - Which design patterns, design principles, C++20 features, ... did you use?
+   - Which design patterns, design principles, modern C++ features, ... did you use?
    - What are the advantages and disadvantages of the redesigned version?
    - Would it be adopted by your team members? Why (not)?
 */
