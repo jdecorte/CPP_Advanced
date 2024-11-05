@@ -24,6 +24,4 @@ int main(int argc, char* argv[])
   auto basic = Wall::factory.create({0,0}, {5000,0}, 0, 3000);
   cout << *basic << "\n";
 
-  // cannot create factory directly
-  //Wall::BasicWallFactory factory{};
 }
