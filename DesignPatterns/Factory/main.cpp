@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
   const auto also_partition =
     WallFactory::create_wall(WallType::partition, {0,0}, {5000,0}, 0, 4200);
   if (also_partition)
+    // safely casting std::shared_ptr of base class 
+    // types into std::shared_ptr of derived class types
     cout << *dynamic_pointer_cast<SolidWall>(also_partition) << "\n";
 
   // creation via nested factory

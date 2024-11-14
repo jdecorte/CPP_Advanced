@@ -81,6 +81,8 @@
         "variant": "cpp",
         "ranges": "cpp",
         "pointers": "cpp",
-        "source_location": "cpp"
+        "source_location": "cpp",
+        "latch": "cpp",
+        "barrier": "cpp"
     }
 }

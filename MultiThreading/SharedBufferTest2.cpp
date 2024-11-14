@@ -1,6 +1,7 @@
 // Fig. 17.8: SharedBufferTest.cpp
 // Concurrent threads correctly manipulating a synchronized buffer.
 #include <chrono>
+#include <format>
 #include <iostream>
 #include <mutex>
 #include <random>
@@ -54,18 +55,17 @@ int main() {
             sum += buffer.get(); // get buffer value and add to sum
          }
 
-         std::cout << "\nConsumer read values totaling " << sum << "\nTerminating Consumer\n";
+         std::cout << std::format("\n{} {}\n{}\n",
+            "Consumer read values totaling", sum, "Terminating Consumer");
       }
    };
 
-   std::cout << std::left << std::setw(40) << "Operation" << "Buffer\t\tOccupied\n"
-   << std::left << std::setw(40) << "---------" << "------\t\t--------\n\n";
+   std::cout << std::format("{:<40}{}\t\t{}\n{:<40}{}\t\t{}\n\n",
+      "Operation", "Buffer", "Occupied",
+      "---------", "------", "--------");
 
-   std::thread producer{produce}; // start producer thread
-   std::thread consumer{consume}; // start consumer thread 
-
-   producer.join(); // wait for producer to finish
-   consumer.join(); // wait for consumer to finish
+   std::jthread producer{produce}; // start producer thread
+   std::jthread consumer{consume}; // start consumer thread 
 }
 
 /************************************************************************

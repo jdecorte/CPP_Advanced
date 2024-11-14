@@ -2,6 +2,7 @@
 // UnsynchronizedBuffer incorrectly maintains a shared integer that is 
 // accessed by a producer thread and a consumer thread.
 #pragma once
+#include <format>
 #include <iostream>
 #include <string>
 
@@ -9,13 +10,13 @@ class UnsynchronizedBuffer {
 public:
    // place value into buffer
    void put(int value) {
-      std::cout << "Producer writes\t" << value << std::endl;
+      std::cout << std::format("Producer writes\t{:2d}", value);
       m_buffer = value;
    }
 
    // return value from buffer
    int get() const {
-      std::cout << "Consumer reads\t" << m_buffer << std::endl;
+      std::cout << std::format("Consumer reads\t{:2d}", m_buffer);
       return m_buffer;
    }
 private:

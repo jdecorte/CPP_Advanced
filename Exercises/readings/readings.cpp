@@ -10,7 +10,7 @@ Redesign this program to the known design patterns and best practices.
 - The program should be easy to read and maintain
 - The program should be easy to test
 - The program should be easy to extend: for example, 
-   - it should be easy to add a new input channel iso a text file (e.g. a database)
+   - it should be easy to add a new input channel iso a text file (e.g. a database or a metering device)
    - it should be easy to add a new output channel (e.g. a JSON file or a database)
    - the choice for the type of input or output channel should be made at runtime (find a way to do this)
 

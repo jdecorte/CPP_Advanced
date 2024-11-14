@@ -1,71 +1,72 @@
-// Fig. 17.6: SharedBufferTest.cpp
-// Application with concurrent jthreads sharing an unsynchronized buffer.
+// Fig. 17.8: SharedBuffer_semaphoreTest.cpp
+// Concurrent threads correctly manipulating a synchronized buffer.
 #include <chrono>
 #include <format>
 #include <iostream>
+#include <mutex>
 #include <random>
 #include <thread>
-#include "UnsynchronizedBuffer.h"
+#include "SynchronizedBuffer_semaphore.h"
 
 int main() {
-   // create UnsynchronizedBuffer to store ints       
-   UnsynchronizedBuffer buffer;
+   // set up random-number generation 
+   std::random_device rd;
+   std::default_random_engine engine{rd()};
+   std::uniform_int_distribution ints{0, 3000};
+   std::mutex intsMutex;
+
+   // lambda for synchronized random sleep time generation
+   auto getSleepTime{
+      [&]() {
+         std::lock_guard lock{intsMutex};
+         return std::chrono::milliseconds{ints(engine)};
+      }
+   };
+
+   // create SynchronizedBuffer to store ints       
+   SynchronizedBuffer buffer;
 
    // lambda expression that produces the values 1-10 and sums them 
    auto produce{
-      [&buffer]() {
-         // set up random-number generation 
-         std::random_device rd;
-         std::default_random_engine engine{rd()};
-         std::uniform_int_distribution ints{0, 3000};
-
+      [&buffer, &getSleepTime]() {
          int sum{0};
 
          for (int count{1}; count <= 10; ++count) {
             // get random sleep time then sleep
-            std::chrono::milliseconds sleepTime{ints(engine)};
-            std::this_thread::sleep_for(sleepTime);
+            std::this_thread::sleep_for(getSleepTime());
 
             buffer.put(count); // set value in buffer
             sum += count; // add count to sum of values produced
-            std::cout << std::format("\t{:2d}\n", sum);
          }
-   
-         std::cout << "Producer done producing\nTerminating Producer\n";      
+
+         std::cout << "Producer done producing\nTerminating Producer\n";
       }
    };
 
    // lambda expression that consumes the values 1-10 and sums them
    auto consume{
-      [&buffer]() {
-         // set up random-number generation 
-         std::random_device rd;
-         std::default_random_engine engine{rd()};
-         std::uniform_int_distribution ints{0, 3000};
-
+      [&buffer, &getSleepTime]() {
          int sum{0};
 
          for (int count{1}; count <= 10; ++count) {
             // get random sleep time then sleep
-            std::chrono::milliseconds sleepTime{ints(engine)};
-            std::this_thread::sleep_for(sleepTime);
+            std::this_thread::sleep_for(getSleepTime());
 
             sum += buffer.get(); // get buffer value and add to sum
-            std::cout << std::format("\t\t\t{:2d}\n", sum);
-        }
+         }
 
          std::cout << std::format("\n{} {}\n{}\n",
             "Consumer read values totaling", sum, "Terminating Consumer");
       }
    };
 
-   std::cout << "Action\t\tValue\tSum of Produced\tSum of Consumed\n";
-   std::cout << "------\t\t-----\t---------------\t---------------\n";
+   std::cout << std::format("{:<40}{}\t\t{}\n{:<40}{}\t\t{}\n\n",
+      "Operation", "Buffer", "Occupied",
+      "---------", "------", "--------");
 
-   std::jthread producer{produce}; // start producer jthread
-   std::jthread consumer{consume}; // start consumer jthread 
-} 
-
+   std::jthread producer{produce}; // start producer thread
+   std::jthread consumer{consume}; // start consumer thread 
+}
 
 /************************************************************************
  * (C) Copyright 1992-2022 by Deitel & Associates, Inc. and             *
