@@ -32,7 +32,7 @@ public:
 
   bool intersects(const Wall& other) const
   {
-    return false;
+    return false; // not implemented
   }
 private:
   class BasicWallFactory
