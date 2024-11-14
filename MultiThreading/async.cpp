@@ -1,7 +1,7 @@
 // Fig. 17.12: async.cpp
 // Prime-factorization tasks performed in separate threads
 #include <cmath>
-// #include <fmt/format.h>
+#include <format>
 #include <thread> // std::this_thread::get_id
 #include <future> // std::async
 #include <iostream>
@@ -9,13 +9,12 @@
 #include <string>
 #include <tuple>
 #include <vector>
-#include <iomanip>
 
 // get current thread's ID as a string
 std::string id() {
-   std::ostringstream out;
-   out << std::this_thread::get_id();
-   return out.str();
+    std::ostringstream out;
+    out << std::this_thread::get_id();
+    return out.str();
 }
 
 // type alias for vector of factor/count pairs
@@ -27,9 +26,8 @@ using FactorResults = std::tuple<std::string, long long, bool, Factors>;
 
 // performs prime factorization   
 FactorResults getFactors(std::string name, long long number) {
-   // std::cout << fmt::format(
-   //    "{}: Thread {} executing getFactors for {}\n", name, id(), number);
-   std::cout << name << ": Thread " << id() << " executing getFactors for " << number << std::endl;
+   std::cout << std::format(
+      "{}: Thread {} executing getFactors for {}\n", name, id(), number);
 
    long long originalNumber{number}; // copy to place in FactorResults
    Factors factors; // vector of factor/count pairs
@@ -64,7 +62,7 @@ FactorResults getFactors(std::string name, long long number) {
       factors.push_back({number, 1});
    }
 
-   bool isPrime{factors.size() == 1 && std::get<int>(factors[0]) == 1};
+   bool isPrime{factors.size() == 1 && get<int>(factors[0]) == 1};
 
    // initialize the FactorResults object returned by getFactors
    return {name, originalNumber, isPrime, factors};
@@ -84,13 +82,11 @@ void proveFactors(long long number, const Factors& factors) {
 
    // confirm proof and number are equal
    if (proof == number) {
-      // std::cout << fmt::format(
-      //    "\nProduct of factors matches original value ({})\n", proof);
-      std::cout << "\nProduct of factors matches original value (" << proof << ")\n";
+      std::cout << std::format(
+         "\nProduct of factors matches original value ({})\n", proof);
    }
    else {
-      // std::cout << fmt::format("\n{} != {}\n", proof, number);
-      std::cout << proof << " != " << number << std::endl;
+      std::cout << std::format("\n{} != {}\n", proof, number);
    }
 }
 
@@ -100,23 +96,18 @@ void displayResults(const FactorResults& results) {
    // isPrime (bool) and factors (Factors) 
    const auto& [name, number, isPrime, factors] {results};
 
-   // std::cout << fmt::format("\n{} results:\n", name);
-   std::cout << name << " results:\n";
+   std::cout << std::format("\n{} results:\n", name);
 
    // display whether value is prime
    if (isPrime) {
-      // std::cout << fmt::format("{} is prime\n", number);
-      std::cout << number << " is prime\n";
+      std::cout << std::format("{} is prime\n", number);
    }
    else { // display prime factors
-      // std::cout << fmt::format("{}'s prime factors:\n\n", number);
-      std::cout << number << "'s prime factors:\n\n";
-      // std::cout << fmt::format("{:<12}{:<8}\n", "Factor", "Count");
-      std::cout << std::setw(12) << "Factor" << std::setw(8) << "Count" << std::endl;
+      std::cout << std::format("{}'s prime factors:\n\n", number);
+      std::cout << std::format("{:<12}{:<8}\n", "Factor", "Count");
 
       for (const auto& [factor, count] : factors) {
-         // std::cout << fmt::format("{:<12}{:<8}\n", factor, count);
-         std::cout << std::setw(12) << factor << std::setw(8) << count << std::endl;
+         std::cout << std::format("{:<12}{:<8}\n", factor, count);
       }
    }
 
@@ -142,21 +133,4 @@ int main() {
    std::cout << "\nMAIN ENDS\n";
 }
 
-
- 
-
-/************************************************************************
- * (C) Copyright 1992-2022 by Deitel & Associates, Inc. and             *
- * Pearson Education, Inc. All Rights Reserved.                         *
- *                                                                      *
- * DISCLAIMER: The authors and publisher of this book have used their   *
- * best efforts in preparing the book. These efforts include the        *
- * development, research, and testing of the theories and programs      *
- * to determine their effectiveness. The authors and publisher make     *
- * no warranty of any kind, expressed or implied, with regard to these  *
- * programs or to the documentation contained in these books. The       *
- * authors and publisher shall not be liable in any event for           *
- * incidental or consequential damages in connection with, or arising   *
- * out of, the furnishing, performance, or use of these programs.       *
- ***********************************************************************/
 

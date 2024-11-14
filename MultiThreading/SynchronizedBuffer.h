@@ -1,10 +1,11 @@
 /// Fig. 17.7: SynchronizedBuffer.h 
 // SynchronizedBuffer maintains synchronized access to a shared mutable
 // integer that is accessed by a producer thread and a consumer thread.
-#include <condition_variable>  
+#pragma once
+#include <condition_variable> 
+#include <format> 
 #include <mutex>
 #include <iostream>
-#include <iomanip>
 #include <string>
 
 using namespace std::string_literals;
@@ -16,16 +17,18 @@ public:
       // critical section that requires a lock to modify shared data
       {
          // lock on m_mutex to be able to write to m_buffer
+         // unique_lock is used here because we will be waiting on a condition
          std::unique_lock dataLock{m_mutex};
 
          if (m_occupied) {
-            std::cout << 
-               "Producer tries to write.\n" << m_buffer << '\t' << m_occupied << '\n'
-               << "Buffer full. Producer waits." << '\n';
+            std::cout << std::format(
+               "Producer tries to write.\n{:<40}{}\t\t{}\n\n",
+               "Buffer full. Producer waits.", m_buffer, m_occupied);
 
             // wait on condition variable m_cv; the lambda in the second
             // argument ensures that if the thread gets the processor
             // before m_occupied is false, the thread continues waiting
+            // lock is released and reacquired when the thread is notified and m_occupied is false
             m_cv.wait(dataLock, [&]() {return !m_occupied; });
          }
 
@@ -33,8 +36,9 @@ public:
          m_buffer = value;
          m_occupied = true;
 
-         std::cout << std::left << std::setw(40) << ("Producer writes " + std::to_string(value))
-          << m_buffer << "\t\t" << m_occupied << "\n\n";
+         std::cout << std::format("{:<40}{}\t\t{}\n\n",
+            "Producer writes "s + std::to_string(value),
+            m_buffer, m_occupied);
       } // dataLock's destructor releases the lock on m_mutex 
 
       // if consumer is waiting, notify it that it can now read
@@ -51,9 +55,9 @@ public:
          std::unique_lock dataLock{m_mutex};
 
          if (!m_occupied) {
-            std::cout << "Consumer tries to read.\n"
-            << std::left << std::setw(40) << "Buffer empty. Consumer waits."
-            << m_buffer << "\t\t" << m_occupied << "\n\n";
+            std::cout << std::format(
+               "Consumer tries to read.\n{:<40}{}\t\t{}\n\n",
+               "Buffer empty. Consumer waits.", m_buffer, m_occupied);
 
             // wait on condition variable m_cv; the lambda in the second 
             // argument ensures that if the thread gets the processor
@@ -64,9 +68,9 @@ public:
          value = m_buffer;
          m_occupied = false;
 
-         std::cout << std::left << std::setw(40) << ("Consumer reads " + std::to_string(m_buffer))
-          << m_buffer << "\t\t" << m_occupied << "\n"
-          << std::string(64, '-') << "\n";
+         std::cout << std::format("{:<40}{}\t\t{}\n{}\n",
+            "Consumer reads "s + std::to_string(m_buffer),
+            m_buffer, m_occupied, std::string(64, '-'));
       } // dataLock's destructor releases the lock on m_mutex 
 
       // if producer is waiting, notify it that it can now write

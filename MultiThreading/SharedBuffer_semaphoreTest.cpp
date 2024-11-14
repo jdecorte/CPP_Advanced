@@ -1,4 +1,4 @@
-// Fig. 17.8: SharedBufferTest.cpp
+// Fig. 17.8: SharedBuffer_semaphoreTest.cpp
 // Concurrent threads correctly manipulating a synchronized buffer.
 #include <chrono>
 #include <format>
@@ -6,7 +6,7 @@
 #include <mutex>
 #include <random>
 #include <thread>
-#include "SynchronizedBuffer.h"
+#include "SynchronizedBuffer_semaphore.h"
 
 int main() {
    // set up random-number generation 

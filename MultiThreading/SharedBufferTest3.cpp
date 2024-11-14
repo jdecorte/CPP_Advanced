@@ -54,7 +54,7 @@ int main() {
             sum += buffer.get(); // get buffer value and add to sum
          }
 
-         std::cout << fmt::format("{} {}\n{}\n\n",
+         std::cout << std::format("{} {}\n{}\n\n",
             "Consumer read values totaling", sum, "Terminating Consumer");
       }
    };

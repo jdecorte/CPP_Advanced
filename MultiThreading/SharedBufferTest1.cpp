@@ -1,6 +1,7 @@
 // Fig. 17.6: SharedBufferTest.cpp
 // Application with concurrent jthreads sharing an unsynchronized buffer.
 #include <chrono>
+#include <format>
 #include <iostream>
 #include <random>
 #include <thread>
@@ -27,7 +28,7 @@ int main() {
 
             buffer.put(count); // set value in buffer
             sum += count; // add count to sum of values produced
-            std::cout << "\tproducer sum = " << sum << std::endl;
+            std::cout << std::format("\t{:2d}\n", sum);
          }
    
          std::cout << "Producer done producing\nTerminating Producer\n";      
@@ -50,22 +51,19 @@ int main() {
             std::this_thread::sleep_for(sleepTime);
 
             sum += buffer.get(); // get buffer value and add to sum
-            std::cout << "\tconsumer sum = " << sum << std::endl;
+            std::cout << std::format("\t\t\t{:2d}\n", sum);
         }
 
-         std::cout << 
-            "Consumer read values totaling " <<  sum << "\nTerminating Consumer " << std::endl;
+         std::cout << std::format("\n{} {}\n{}\n",
+            "Consumer read values totaling", sum, "Terminating Consumer");
       }
    };
 
    std::cout << "Action\t\tValue\tSum of Produced\tSum of Consumed\n";
    std::cout << "------\t\t-----\t---------------\t---------------\n";
 
-   std::thread producer{produce}; // start producer thread
-   std::thread consumer{consume}; // start consumer thread 
-
-   producer.join(); // wait for producer to finish
-   consumer.join(); // wait for consumer to finish
+   std::jthread producer{produce}; // start producer jthread
+   std::jthread consumer{consume}; // start consumer jthread 
 } 
 
 
