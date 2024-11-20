@@ -6,7 +6,8 @@
 #include <mutex>
 #include <random>
 #include <thread>
-#include "SynchronizedBuffer.h"
+// #include "SynchronizedBuffer.h"
+#include "SynchronizedBuffer_semaphore.h"
 
 int main() {
    // set up random-number generation 

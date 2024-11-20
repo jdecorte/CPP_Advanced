@@ -1,7 +1,8 @@
 /*
-The program below reads a text file with a sequence of "telegrams" (originating from a Belgian digital meter for gas and electricity, each telegram corresponds to
-a reading of the meter at a certain time) 
-and processes the data to extract the values of the OBIS codes specified in the map obiscodes_used. The processed data is saved to a CSV file "readings_processed.csv".
+The program below reads a text file with a sequence of "telegrams" (originating from a Belgian digital meter for gas and electricity, 
+each telegram corresponds to a reading of the meter at a certain time) 
+and processes the data to extract the values of the OBIS codes specified in the map obiscodes_used. 
+The processed data is saved to a CSV file "readings_processed.csv".
 
 Redesign this program to the known design patterns and best practices.
 - Use the SOLID principles
@@ -15,7 +16,8 @@ Redesign this program to the known design patterns and best practices.
    - the choice for the type of input or output channel should be made at runtime (find a way to do this)
 
 - Add functionality 
-   - design in such a way that lines are read, processed and written one by one, so you can add a sleep after each line to simulate real-time processing
+   - design in such a way that lines are read, processed and written one by one, so you can add a sleep after each line 
+     to simulate real-time processing
    - provide JSON as second output format to test your design using the cereal header only library
    - add error handling and logging
    

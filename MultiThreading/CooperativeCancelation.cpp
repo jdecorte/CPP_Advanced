@@ -20,6 +20,9 @@ std::string id() {
 
 int main() {
    // each printTask iterates until a stop is requested by another thread
+   // Each jthread internally maintains a stop_source, which has an associated stop_token. 
+   // A jthread's task function optionally can receive this token as its first parameter. 
+   // The task function can then call stop_requested on the token to determine whether a stop has been requested.
    auto printTask{
       [&](std::stop_token token, std::string name) {
          // set up random-number generation 
@@ -48,7 +51,7 @@ int main() {
          }
 
          std::cout << std::format("{} terminating.\n", name);
-      }
+      } 
    };
 
    std::cout << std::format("MAIN (id: {}) STARTING TASKS\n", id());
@@ -62,6 +65,7 @@ int main() {
    std::this_thread::sleep_for(std::chrono::seconds{2});
 
    std::cout << std::format("\nMAIN (id: {}) ENDS\n\n", id()); 
+   // the jthread's destructor calls request_stop on the stop_source when the jthread is destroyed
 }
 
 

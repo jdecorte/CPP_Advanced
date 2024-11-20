@@ -1,6 +1,7 @@
 // Fig. 17.16: SynchronizedBuffer.h 
 // SynchronizedBuffer using two binary_semaphores to  
 // maintain synchronized access to a shared mutable int.
+// INCLUDE FROM SharedBufferTest2.cpp
 #pragma once
 #include <format> 
 #include <iostream>
