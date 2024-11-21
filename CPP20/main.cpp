@@ -5,6 +5,7 @@
 #include "demo_lambdas.h"
 #include "demo_source_location.h"
 #include "demo_designated_initializers.h"
+#include "demo_concepts.h"
 
 int main()
 {
@@ -15,7 +16,8 @@ int main()
 
     // demo_source_location();
 
-    demo_designated_initializers();
+    // demo_designated_initializer();
+    demo_concepts();
     return 0;
 }
 
