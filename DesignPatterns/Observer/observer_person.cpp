@@ -15,20 +15,10 @@ template <typename T> struct Observable
 {
     void notify(T& source, const string& name) 
     { 
-        // notify all observers
-        for (auto observer : observers)
-            observer->field_changed(source, name);
+        for (auto* o : observers) o->field_changed(source, name); 
     }
-    void subscribe(Observer<T>* f) 
-    { 
-        // subscribe an observer
-        observers.push_back(f);
-    }
-    void unsubscribe(Observer<T>* f) 
-    { 
-        // unsubscribe an observer
-        observers.remove(f);
-    }
+    void subscribe(Observer<T>* f) { observers.push_back(f); }
+    void unsubscribe(Observer<T>* f) { observers.remove(f); }
 private:
     list<Observer<T>*> observers;
 };
@@ -62,14 +52,11 @@ struct ConsolePersonObserver : Observer<Person>
 
 int main()
 {
-    // Test the observer pattern
     Person p;
     ConsolePersonObserver cpo;
     p.subscribe(&cpo);
-    p.set_age(30);
-
+    p.set_age(14);
     p.unsubscribe(&cpo);
-    p.set_age(31);
-
+    p.set_age(15);
     return 0;
 }
