@@ -6,18 +6,23 @@
 #include "demo_source_location.h"
 #include "demo_designated_initializers.h"
 #include "demo_concepts.h"
+#include "demo_spaceship.h"
 
 int main()
 {
-    // demo_chrono();
-    // demo_format();
+    // demo_concepts();
     // demo_ranges();
     // demo_lambdas();
+    // demo_chrono();
+    // demo_format();
+
+
 
     // demo_source_location();
 
     // demo_designated_initializer();
-    demo_concepts();
+    demo_spaceship();
+
     return 0;
 }
 
